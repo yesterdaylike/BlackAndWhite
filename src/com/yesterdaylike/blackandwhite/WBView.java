@@ -9,9 +9,9 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
 
-public class WBView extends TextView {
+public class WBView extends View {
 
 	private String TAG = "WBView";
 
@@ -20,14 +20,14 @@ public class WBView extends TextView {
 	private int mStepIntervalH;
 	private final int STEPS = 8;
 	private final int SIZE = 4;
+	private final int DELAYMILLIS = 50;
 
 	private boolean mAnimation = false;
 	private boolean mInitPosition = false;
-	private int count = 0;
-	
-	private int[] value;
-
+	private int mCount = 0;
+	private int[] mValue;
 	private Random mRandom;
+	private int mTouchCount = 0;
 
 	int[] mPositionsH;
 	int[] mPositionsW;
@@ -36,13 +36,9 @@ public class WBView extends TextView {
 
 	private Runnable runnable= new Runnable() {
 		public void run() {  
-			handler.postDelayed(this, 1000);
+			handler.postDelayed(this, DELAYMILLIS);
 			WBView.this.postInvalidate();
-			count++;
-			if(count>96){
-				handler.removeCallbacks(runnable);
-				mAnimation = false;
-			}
+			mCount++;
 		}  
 	};
 
@@ -52,7 +48,7 @@ public class WBView extends TextView {
 		paint.setAntiAlias(true); 
 		paint.setDither(true);
 		paint.setColor(Color.BLACK);
-		
+
 		handler.post(runnable);
 	}
 
@@ -60,25 +56,24 @@ public class WBView extends TextView {
 		int cellHeight = getHeight() / SIZE;//小方块的高度
 		int cellWidth = getWidth() / SIZE;  //小方块的宽度
 
-		Log.i(TAG, "cellHeight:"+cellHeight+", cellWidth:"+cellWidth);
+		//Log.i(TAG, "getHeight:"+getHeight()+", getWidth:"+getWidth());
+		//Log.i(TAG, "cellHeight:"+cellHeight+", cellWidth:"+cellWidth);
 
-		mPositionsH = new int[SIZE+1];
+		mPositionsH = new int[SIZE+2];
 		mPositionsW = new int[SIZE+1];
 
 		for(int i = 0; i <= SIZE; i++){
-			mPositionsH[i] = cellHeight * i;
+			mPositionsH[i] = cellHeight *( SIZE - i );
 			mPositionsW[i] = cellWidth * i;
 		}
-		
-		mStepIntervalH = cellHeight / STEPS;
-		value = new int[20];
-		
-		for (int i = 0; i < value.length; i++) {
-			value[i] = getRandomPosition();
-		}
+		mPositionsH[ SIZE+1 ] = -cellHeight;
 
-		/*handler.post(runnable);
-		handler.removeCallbacks(runnable);*/
+		mStepIntervalH = cellHeight / STEPS;
+		mValue = new int[100];
+
+		for (int i = 0; i <= SIZE; i++) {
+			mValue[i] = getRandomPosition();
+		}
 	}
 
 	@Override
@@ -88,29 +83,26 @@ public class WBView extends TextView {
 			mInitPosition = true;
 		}
 
-		int length = count / 8;
-		int step = count % 8;
+		int length = mCount / STEPS;
+		int step = mCount % STEPS;
 		int intervalH = step * mStepIntervalH;
-		Log.e(TAG, "count:"+count+", length:"+length+", step:"+step+", intervalH:"+intervalH);
-		
+		//Log.e(TAG, "count:"+mCount+", length:"+length+", step:"+step+", intervalH:"+intervalH);
+
 		for (int h = 0; h <= SIZE; h++) {
-			int w = value[ h + length ];
-			Log.i(TAG, "h:"+h+", w:"+w);
-			
+			int w = mValue[ ( h + length ) % 100 ];
+			//Log.i(TAG, "h:"+h+", w:"+w);
+
 			int left = mPositionsW[w];
-			int top = mPositionsH[h]+intervalH;
+			int top = mPositionsH[h+1]+intervalH+1;
 			int right = mPositionsW[w+1];
-			int bottom = mPositionsH[h+1]+intervalH;
-			Log.v(TAG, "left:"+left+", top:"+top+", right:"+right+", bottom:"+bottom);
-			canvas.drawRect(mPositionsW[w], mPositionsH[h]+intervalH, mPositionsW[w+1], mPositionsH[h+1]+intervalH, paint);
+			int bottom = mPositionsH[h]+intervalH-1;
+			//Log.v(TAG, "left:"+left+", top:"+top+", right:"+right+", bottom:"+bottom);
+			canvas.drawRect(left, top, right, bottom, paint);
 		}
-		
-		/*if( ( count % 8 ) == 7 ){
-			for (int i = 0; i < SIZE; i++) {
-				value[i] = value[i+1];
-			}
-			value[SIZE] = getRandomPosition();
-		}*/
+
+		if( step == 7 ){
+			mValue[ ( SIZE+length+1 ) % 100 ] = getRandomPosition();
+		}
 	}
 
 	private int getRandomPosition(){
@@ -122,5 +114,21 @@ public class WBView extends TextView {
 
 	public boolean isAnimation(){
 		return mAnimation;
+	}
+
+	public void checkPath(float x){
+		int path = 0;
+		for (; path < mPositionsW.length - 1 ; path++) {
+			if(x <= mPositionsW[path+1] ){
+				break;
+			}
+		}
+		
+		Log.i(TAG, "mTouchCount:"+mTouchCount+", path:"+path+", mValue:"+mValue[ mTouchCount ]);
+		boolean eq =  path == mValue[ mTouchCount++ ];
+		if(!eq){
+			handler.removeCallbacks(runnable);
+			mAnimation = false;
+		}
 	}
 }

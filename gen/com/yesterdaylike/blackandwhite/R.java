@@ -26,6 +26,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class id {
         public static final int main_view=0x7f070000;
+        public static final int message=0x7f070001;
     }
     public static final class layout {
         public static final int activity_fullscreen=0x7f030000;
