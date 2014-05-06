@@ -11,15 +11,12 @@ import android.widget.TextView;
 public class FullscreenActivity extends Activity {
 
 	private WBView view;
-	private TextView message;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fullscreen);
 		view = (WBView) findViewById(R.id.main_view);
-		message = (TextView) findViewById(R.id.message);
-		message.append("start\n");
 		view.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -28,8 +25,6 @@ public class FullscreenActivity extends Activity {
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
 					Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
-					message.append("X:"+event.getX()+", Y:"+event.getY());
-					message.append("\n");
 					view.checkPath(event.getX());
 					break;
 
