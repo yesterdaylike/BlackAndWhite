@@ -1,5 +1,7 @@
 package com.yesterdaylike.blackandwhite;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +47,10 @@ public class WBView extends View {
 	private SoundPool mSoundPool;
 	private int mSound;
 	private int mSoundOver;
+	
+	private ActionInterface mActionInterface; 
+	private HistoryDB historyDB;
+	private Context mContext;
 
 	private Handler handler = new Handler();
 
@@ -57,6 +64,7 @@ public class WBView extends View {
 
 	public WBView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mContext = context;
 		mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
 		mSound = mSoundPool.load(context, R.raw.effect_tick, 1); 
 		mSoundOver = mSoundPool.load(context, R.raw.keypress_spacebar, 1); 
@@ -129,8 +137,9 @@ public class WBView extends View {
 		mStart = true;
 	}
 
-	void restart(){
+	public void restart(){
 		setup();
+		this.invalidate();
 	}
 
 	@Override
@@ -239,6 +248,7 @@ public class WBView extends View {
 			handler.removeCallbacks(runnable);
 			mStart = false;
 			//可以重新开始
+			mActionInterface.gameOver();
 		}
 
 		else {
@@ -247,6 +257,31 @@ public class WBView extends View {
 				handler.post(runnable);
 				mAnimation = true;
 			}
+		}
+	}
+	
+	void setPrintInterface(ActionInterface mAI){
+		mActionInterface = mAI;
+	}
+	
+	public void saveHistory(){
+		if( null == historyDB ){
+			historyDB = new HistoryDB(mContext);
+		}
+		Calendar calendar = Calendar.getInstance();
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int month = calendar.get(Calendar.MONTH);
+		long timeIiMillis = calendar.getTimeInMillis();
+		
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+		String time = df.format(calendar.getTime());
+		//Log.e("zhengwenhui", "SAVE HISTORY month:"+month+", day:"+day+", timeIiMillis:"+timeIiMillis+", step:"+step+", score:"+score+", maxNumber:"+maxNumber);
+		historyDB.add(month, day, time ,timeIiMillis, 0, mTouchCount, 0, 0);
+	}
+
+	public void closeHistoryDB(){
+		if( null != historyDB ){
+			historyDB.close();
 		}
 	}
 }

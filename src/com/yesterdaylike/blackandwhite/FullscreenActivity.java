@@ -1,23 +1,29 @@
 package com.yesterdaylike.blackandwhite;
 
+import com.huige.tzfe.HistoryActivity;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.TextView;
+import android.widget.Button;
 
-public class FullscreenActivity extends Activity {
+public class FullscreenActivity extends Activity implements ActionInterface{
 
-	private WBView view;
+	private WBView mWBView;
+	private Button mRestartButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fullscreen);
-		view = (WBView) findViewById(R.id.main_view);
-		view.setOnTouchListener(new OnTouchListener() {
+		mRestartButton = (Button) findViewById(R.id.restart);
+		mWBView = (WBView) findViewById(R.id.main_view);
+		mWBView.setPrintInterface(FullscreenActivity.this);
+		mWBView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -25,7 +31,7 @@ public class FullscreenActivity extends Activity {
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
 					Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
-					view.checkPath(event.getX());
+					mWBView.checkPath(event.getX());
 					break;
 
 				default:
@@ -35,5 +41,19 @@ public class FullscreenActivity extends Activity {
 				return false;
 			}
 		});
+	}
+	
+	public void onClickRestart(View view){
+		mWBView.restart();
+		mRestartButton.setVisibility(View.GONE);
+		
+		Intent intent = new Intent(this, HistoryActivity.class);
+		startActivity(intent);
+	}
+
+	@Override
+	public void gameOver() {
+		// TODO Auto-generated method stub
+		mRestartButton.setVisibility(View.INVISIBLE);
 	}
 }

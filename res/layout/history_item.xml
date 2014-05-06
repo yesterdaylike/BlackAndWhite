@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/month"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/day"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="24sp" />
+    
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/point"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/point" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/qfav_list_bubble_nor"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>
