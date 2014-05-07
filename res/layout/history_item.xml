@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/month"
-        android:layout_width="60dp"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/day"
-        android:layout_width="70dp"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
@@ -25,12 +25,13 @@
     
     <TextView
         android:id="@+id/time"
-        android:layout_width="60dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
         android:textColor="@android:color/darker_gray"
-        android:textSize="24sp" />
+        android:textStyle="italic"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/point"

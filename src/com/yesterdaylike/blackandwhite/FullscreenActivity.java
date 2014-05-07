@@ -7,20 +7,40 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
 
 public class FullscreenActivity extends Activity implements ActionInterface{
 
 	private WBView mWBView;
-	private Button mRestartButton;
+	private GameOverView mGameOverView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fullscreen);
-		mRestartButton = (Button) findViewById(R.id.restart);
+		
+		mGameOverView = (GameOverView)findViewById(R.id.game_over_view);
+		mGameOverView.setActionInterface(FullscreenActivity.this);
+		mGameOverView.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_UP:
+					Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
+					mGameOverView.checkPath(event.getX(), event.getY());
+					break;
+
+				default:
+					break;
+				}
+
+				return false;
+			}
+		});
+		
 		mWBView = (WBView) findViewById(R.id.main_view);
-		mWBView.setPrintInterface(FullscreenActivity.this);
+		mWBView.setActionInterface(FullscreenActivity.this);
 		mWBView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -35,23 +55,35 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 				default:
 					break;
 				}
-				
+
 				return false;
 			}
 		});
-	}
-	
-	public void onClickRestart(View view){
-		mWBView.restart();
-		mRestartButton.setVisibility(View.GONE);
-		
-		Intent intent = new Intent(this, HistoryActivity.class);
-		startActivity(intent);
 	}
 
 	@Override
 	public void gameOver() {
 		// TODO Auto-generated method stub
-		mRestartButton.setVisibility(View.INVISIBLE);
+		mGameOverView.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void gameRestart() {
+		// TODO Auto-generated method stub
+		mWBView.restart();
+		mGameOverView.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void gameHistory() {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(this, HistoryActivity.class);
+		startActivity(intent);
+	}
+
+	@Override
+	public void gameBestScore() {
+		// TODO Auto-generated method stub
+		
 	}
 }

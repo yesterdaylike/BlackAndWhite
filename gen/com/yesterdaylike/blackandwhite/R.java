@@ -31,8 +31,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int activity_horizontal_margin=0x7f060000;
         public static final int activity_vertical_margin=0x7f060001;
-        /**  Default screen margins, per the Android Design guidelines. 
-         */
         public static final int history_horizontal_margin=0x7f060002;
         public static final int history_vertical_margin=0x7f060003;
     }
@@ -43,11 +41,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class id {
         public static final int day=0x7f090004;
+        public static final int game_over_view=0x7f090001;
         public static final int history_listview=0x7f090002;
         public static final int main_view=0x7f090000;
         public static final int month=0x7f090003;
         public static final int point=0x7f090006;
-        public static final int restart=0x7f090001;
         public static final int score=0x7f090007;
         public static final int time=0x7f090005;
     }
@@ -62,15 +60,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int keypress_spacebar=0x7f040001;
     }
     public static final class string {
+        public static final int action_best_score=0x7f070005;
         public static final int action_history=0x7f070003;
+        public static final int action_restart=0x7f070004;
         public static final int app_name=0x7f070000;
         public static final int dummy_button=0x7f070001;
         public static final int dummy_content=0x7f070002;
-        public static final int no_history=0x7f070004;
-        public static final int score=0x7f070008;
-        public static final int step=0x7f070007;
-        public static final int today=0x7f070005;
-        public static final int yesterday=0x7f070006;
+        public static final int no_history=0x7f070006;
+        public static final int score=0x7f07000a;
+        public static final int step=0x7f070009;
+        public static final int today=0x7f070007;
+        public static final int yesterday=0x7f070008;
     }
     public static final class style {
         public static final int ButtonBar=0x7f080001;

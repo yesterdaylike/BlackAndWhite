@@ -5,6 +5,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="action_history">记录</string>
+    <string name="action_restart">继续</string>
+    <string name="action_best_score">最佳成绩</string>
     <string name="no_history">还没有历史记录</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>

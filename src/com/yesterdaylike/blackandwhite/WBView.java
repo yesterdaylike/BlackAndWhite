@@ -11,9 +11,7 @@ import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
-import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class WBView extends View {
@@ -22,7 +20,7 @@ public class WBView extends View {
 
 	private final int SIZE = 4;
 	private final int STEPS = 16;
-	private int DELAYMILLIS = 20;
+	public static int DELAYMILLIS = 20;
 	private final int START_TEXT_SIZE = 54;
 
 	private int[] mValue = new int[50];
@@ -42,12 +40,13 @@ public class WBView extends View {
 
 	private Random mRandom;
 	private Paint paint;
-	private Paint textPaint;
+	private Paint paintGray;
+	private Paint paintText;
 
 	private SoundPool mSoundPool;
 	private int mSound;
 	private int mSoundOver;
-	
+
 	private ActionInterface mActionInterface; 
 	private HistoryDB historyDB;
 	private Context mContext;
@@ -72,36 +71,20 @@ public class WBView extends View {
 		setup();
 	}
 
-	int TileColor[] = {
-			Color.BLACK,
-			0xff080808,
-			0xff101010,
-			0xff181818,
-			0xff202020,
-			0xff282828,
-			0xff303030,
-			0xff383838,
-			0xff404040,
-			0xff484848,
-			0xff505050,
-			0xff585858,
-			0xff606060,
-			0xff686868,
-			0xff707070,
-			0xff787878,
-			0xff808080,
-			Color.GRAY,
-	};
-
 	private void initPaint(){
 		paint=new Paint();
 		paint.setAntiAlias(true); 
 		paint.setDither(true);
 		paint.setColor(Color.BLACK);
 
-		textPaint=new Paint();
-		textPaint.setTextSize(START_TEXT_SIZE);
-		textPaint.setColor(Color.WHITE);
+		paintGray=new Paint();
+		paintGray.setAntiAlias(true); 
+		paintGray.setDither(true);
+		paintGray.setColor(Color.GRAY);
+
+		paintText=new Paint();
+		paintText.setTextSize(START_TEXT_SIZE);
+		paintText.setColor(Color.WHITE);
 	}
 
 	private void initPositionlist(){
@@ -129,7 +112,7 @@ public class WBView extends View {
 		for (int i = 0; i <= SIZE; i++) {
 			mValue[i] = getRandomPosition();
 		}
-		
+
 		for (int i = 0; i < mTouchEach.length; i++) {
 			mTouchEach[i] = 0;
 		}
@@ -159,17 +142,23 @@ public class WBView extends View {
 			int w = mValue[ index ];
 			int change = mTouchEach[index];
 
-			left = mPositionsW[w]+(change/2);
-			top = mPositionsH[h+1]+intervalH+1+change;
-			right = mPositionsW[w+1]-(change/2);
-			bottom = mPositionsH[h]+intervalH-change;
-			
-			int color = TileColor[change/4];
-			Log.i("zhengwenhui", "change: "+change+", change/4: "+change/4+", color: "+color);
-			paint.setColor(color);
+			left = mPositionsW[w];
+			top = mPositionsH[h+1]+intervalH+1;
+			right = mPositionsW[w+1];
+			bottom = mPositionsH[h]+intervalH;
+
+			//Log.i("zhengwenhui", "change: "+change+", change/4: "+change/4+", color: "+color);
 			canvas.drawRect(left, top, right, bottom, paint);
-			
+
 			if( change > 0 ){
+				change = 16-change;
+				if( change < 0 ){change = 0;}
+				left += change/2;
+				top += change;
+				right -= change/2;
+				bottom -= change;
+				canvas.drawRect(left, top, right, bottom, paintGray);
+
 				mTouchEach[index]++;
 			}
 
@@ -178,18 +167,18 @@ public class WBView extends View {
 				int positionWText = left + ( cellWidth >> 1 );
 				int positionHText = top + ( cellHeight >> 1 );
 
-				float halfWidthText = textPaint.measureText(valueStr) /2;
-				float halfHeightText = textPaint.getTextSize() /2 ;
+				float halfWidthText = paintText.measureText(valueStr) /2;
+				float halfHeightText = paintText.getTextSize() /2 ;
 
-				canvas.drawText(valueStr, positionWText - halfWidthText, positionHText + halfHeightText, textPaint);
+				canvas.drawText(valueStr, positionWText - halfWidthText, positionHText + halfHeightText, paintText);
 			}
 		}
 
 		//计数
 		String str = String.valueOf(mTouchCount);
-		float halfWidthText = textPaint.measureText(str) /2;
-		float halfHeightText = textPaint.getTextSize() /2 ;
-		canvas.drawText(str, cellWidth * 2 - halfWidthText, 30 + halfHeightText, textPaint);
+		float halfWidthText = paintText.measureText(str) /2;
+		float halfHeightText = paintText.getTextSize() /2 ;
+		canvas.drawText(str, cellWidth * 2 - halfWidthText, 30 + halfHeightText, paintText);
 
 		if(length > mTouchCount){
 			//没有点击
@@ -232,7 +221,7 @@ public class WBView extends View {
 			eq =  path == mValue[ index ];
 			mTouchEach[ index ] = 1;
 			mTouchCount++;
-			
+
 			if( mTouchCount % 12 == 0){
 				DELAYMILLIS--;
 			}
@@ -249,6 +238,7 @@ public class WBView extends View {
 			mStart = false;
 			//可以重新开始
 			mActionInterface.gameOver();
+			saveHistory();
 		}
 
 		else {
@@ -259,11 +249,11 @@ public class WBView extends View {
 			}
 		}
 	}
-	
-	void setPrintInterface(ActionInterface mAI){
+
+	void setActionInterface(ActionInterface mAI){
 		mActionInterface = mAI;
 	}
-	
+
 	public void saveHistory(){
 		if( null == historyDB ){
 			historyDB = new HistoryDB(mContext);
@@ -272,10 +262,9 @@ public class WBView extends View {
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		int month = calendar.get(Calendar.MONTH);
 		long timeIiMillis = calendar.getTimeInMillis();
-		
+
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 		String time = df.format(calendar.getTime());
-		//Log.e("zhengwenhui", "SAVE HISTORY month:"+month+", day:"+day+", timeIiMillis:"+timeIiMillis+", step:"+step+", score:"+score+", maxNumber:"+maxNumber);
 		historyDB.add(month, day, time ,timeIiMillis, 0, mTouchCount, 0, 0);
 	}
 
