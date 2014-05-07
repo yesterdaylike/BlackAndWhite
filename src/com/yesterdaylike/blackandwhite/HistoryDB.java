@@ -48,9 +48,28 @@ public class HistoryDB extends SQLiteOpenHelper {
 			db = getWritableDatabase();
 		}
 		Cursor cursor = db.query("history", null, null, null, null, null, null); 
+		cursor = db.query("history", null, null, null, null, null, null); 
 		//db.close();
 		return cursor;
 	}
+	
+	public String queryBestScore(){
+		if( db == null ){
+			db = getWritableDatabase();
+		}
+		
+		String best = "";
+		Cursor cursor = db.query("history", new String[]{"score"}, null, null, null, null, "score"); 
+		//db.close();
+		if ( null!= cursor ){
+			cursor.moveToFirst();
+			best = cursor.getString(0);
+			cursor.close();
+		}
+		return best;
+	}
+	
+	
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

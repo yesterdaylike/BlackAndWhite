@@ -35,11 +35,13 @@ public class GameOverView extends View {
 
 	RectF bestscoreRect, historyRect, restartRect;
 	RectF checkedRect;
-	
+
+	private HistoryDB historyDB;
 
 	private Handler handler = new Handler();
 	private int mCount = 0;
-	boolean mAnimation = false;
+	
+	private String best;
 
 	private Runnable runnable= new Runnable() {
 		public void run() {  
@@ -60,6 +62,11 @@ public class GameOverView extends View {
 		mSound = mSoundPool.load(context, R.raw.effect_tick, 1); 
 		mContext = context;
 		initPaint();
+		
+		if( null == historyDB ){
+			historyDB = new HistoryDB(mContext);
+		}
+		best = historyDB.queryBestScore();
 	}
 
 	private void initPaint(){
@@ -96,7 +103,7 @@ public class GameOverView extends View {
 		canvas.drawRect(bestscoreRect, paint);
 		canvas.drawRect(historyRect, paint);
 		canvas.drawRect(restartRect, paint);
-		
+
 		if( mCount > 0 && null != checkedRect ){
 			int iw = 0;
 			int ih = 0;
@@ -111,7 +118,7 @@ public class GameOverView extends View {
 		}
 
 		String bestScoreStr, historyStr, restartStr;
-		bestScoreStr = mContext.getString(R.string.action_best_score);
+		bestScoreStr = mContext.getString(R.string.action_best_score)+" "+best;
 		historyStr = mContext.getString(R.string.action_history);
 		restartStr = mContext.getString(R.string.action_restart);
 
@@ -124,15 +131,12 @@ public class GameOverView extends View {
 		canvas.drawText(historyStr, width/4 - halfWidthText, height*3/4 + halfHeightText, paintText);
 
 		halfWidthText = paintText.measureText(restartStr) /2;
-		canvas.drawText(restartStr, width/4 - halfWidthText, height*3/4 + halfHeightText, paintText);
+		canvas.drawText(restartStr, width/4*3 - halfWidthText, height*3/4 + halfHeightText, paintText);
 	}
 
 	public void checkPath(float x, float y){
-		
-		if( !mAnimation ){
-			handler.post(runnable);
-			mAnimation = true;
-		}
+
+		handler.post(runnable);
 		mCount = 0;
 
 		if ( bestscoreRect.contains(x, y) ){
@@ -159,5 +163,11 @@ public class GameOverView extends View {
 
 	void setActionInterface(ActionInterface mAI){
 		mActionInterface = mAI;
+	}
+	
+	public void closeHistoryDB(){
+		if( null != historyDB ){
+			historyDB.close();
+		}
 	}
 }

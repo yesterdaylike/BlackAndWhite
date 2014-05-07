@@ -122,6 +122,7 @@ public class WBView extends View {
 
 	public void restart(){
 		setup();
+		DELAYMILLIS = 20;
 		this.invalidate();
 	}
 
