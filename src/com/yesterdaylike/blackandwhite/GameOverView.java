@@ -55,6 +55,10 @@ public class GameOverView extends View {
 			}
 		}  
 	};
+	
+	public void getBestScore(){
+		best = historyDB.queryBestScore();
+	}
 
 	public GameOverView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -66,7 +70,6 @@ public class GameOverView extends View {
 		if( null == historyDB ){
 			historyDB = new HistoryDB(mContext);
 		}
-		best = historyDB.queryBestScore();
 	}
 
 	private void initPaint(){

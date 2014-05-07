@@ -59,13 +59,12 @@ public class HistoryDB extends SQLiteOpenHelper {
 		}
 		
 		String best = "";
-		Cursor cursor = db.query("history", new String[]{"score"}, null, null, null, null, "score"); 
+		Cursor cursor = db.query("history", new String[]{"score"}, null, null, null, null, "score desc"); 
 		//db.close();
-		if ( null!= cursor ){
-			cursor.moveToFirst();
+		if ( cursor.moveToFirst()){
 			best = cursor.getString(0);
-			cursor.close();
 		}
+		cursor.close();
 		return best;
 	}
 	

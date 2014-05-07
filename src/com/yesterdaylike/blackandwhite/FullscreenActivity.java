@@ -64,6 +64,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 	@Override
 	public void gameOver() {
 		// TODO Auto-generated method stub
+		mGameOverView.getBestScore();
 		mGameOverView.setVisibility(View.VISIBLE);
 	}
 
