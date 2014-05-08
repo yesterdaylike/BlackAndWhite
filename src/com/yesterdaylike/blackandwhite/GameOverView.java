@@ -40,7 +40,7 @@ public class GameOverView extends View {
 
 	private Handler handler = new Handler();
 	private int mCount = 0;
-	
+
 	private String best;
 
 	private Runnable runnable= new Runnable() {
@@ -55,9 +55,10 @@ public class GameOverView extends View {
 			}
 		}  
 	};
-	
+
 	public void getBestScore(){
 		best = historyDB.queryBestScore();
+		Log.e("getBestScore", "best"+best);
 	}
 
 	public GameOverView(Context context, AttributeSet attrs) {
@@ -66,7 +67,7 @@ public class GameOverView extends View {
 		mSound = mSoundPool.load(context, R.raw.effect_tick, 1); 
 		mContext = context;
 		initPaint();
-		
+
 		if( null == historyDB ){
 			historyDB = new HistoryDB(mContext);
 		}
@@ -91,6 +92,7 @@ public class GameOverView extends View {
 	private void initPositionlist(){
 		height = getHeight();
 		width = getWidth();
+		Log.e("initPositionlist", "h:"+height+", w:"+width);
 		bestscoreRect = new RectF(0, height/4, width, height/2-1);
 		historyRect = new RectF(0, height/2, width/2-1, height);
 		restartRect = new RectF(width/2, height/2, width, height);
@@ -167,7 +169,7 @@ public class GameOverView extends View {
 	void setActionInterface(ActionInterface mAI){
 		mActionInterface = mAI;
 	}
-	
+
 	public void closeHistoryDB(){
 		if( null != historyDB ){
 			historyDB.close();

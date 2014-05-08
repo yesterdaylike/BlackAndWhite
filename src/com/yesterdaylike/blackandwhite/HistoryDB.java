@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class HistoryDB extends SQLiteOpenHelper {
 
@@ -29,7 +30,7 @@ public class HistoryDB extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		db.execSQL("CREATE TABLE IF NOT EXISTS history" +  
-				"(_id INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT, day TEXT, time TEXT, date TEXT, step TEXT, score TEXT, interval TEXT, type TEXT)");  
+				"(_id INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT, day TEXT, time TEXT, date TEXT, step INTEGER, score INTEGER, interval INTEGER, type TEXT)");  
 	}
 
 	public void add(int month, int day, String time ,long date, int step, int score, int interval, int type){
@@ -59,10 +60,10 @@ public class HistoryDB extends SQLiteOpenHelper {
 		}
 		
 		String best = "";
-		Cursor cursor = db.query("history", new String[]{"score"}, null, null, null, null, "score desc"); 
+		Cursor cursor = db.query("history", new String[]{"_id","score"}, null, null, null, null, "score desc"); 
 		//db.close();
 		if ( cursor.moveToFirst()){
-			best = cursor.getString(0);
+			best = cursor.getString(1);
 		}
 		cursor.close();
 		return best;

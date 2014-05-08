@@ -48,7 +48,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 				// TODO Auto-generated method stub
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
-					Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
+					//Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
 					mWBView.checkPath(event.getX());
 					break;
 
@@ -72,7 +72,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 	public void gameRestart() {
 		// TODO Auto-generated method stub
 		mWBView.restart();
-		mGameOverView.setVisibility(View.GONE);
+		mGameOverView.setVisibility(View.INVISIBLE);
 	}
 
 	@Override

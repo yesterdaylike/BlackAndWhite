@@ -148,7 +148,6 @@ public class WBView extends View {
 			right = mPositionsW[w+1];
 			bottom = mPositionsH[h]+intervalH;
 
-			//Log.i("zhengwenhui", "change: "+change+", change/4: "+change/4+", color: "+color);
 			canvas.drawRect(left, top, right, bottom, paint);
 
 			if( change > 0 ){
@@ -238,8 +237,12 @@ public class WBView extends View {
 			handler.removeCallbacks(runnable);
 			mStart = false;
 			//可以重新开始
-			mActionInterface.gameOver();
+			if(x>0){
+				mTouchCount--;
+			}
+			
 			saveHistory();
+			mActionInterface.gameOver();
 		}
 
 		else {
