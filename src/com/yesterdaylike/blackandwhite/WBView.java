@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class WBView extends View {
@@ -21,6 +22,7 @@ public class WBView extends View {
 	private final int SIZE = 4;
 	private final int STEPS = 16;
 	public static int DELAYMILLIS = 20;
+	private int delaychange = 1;
 	private final int START_TEXT_SIZE = 54;
 
 	private int[] mValue = new int[50];
@@ -91,9 +93,6 @@ public class WBView extends View {
 		cellHeight = getHeight() / SIZE;//小方块的高度
 		cellWidth = getWidth() / SIZE;  //小方块的宽度
 
-		//Log.i(TAG, "getHeight:"+getHeight()+", getWidth:"+getWidth());
-		//Log.i(TAG, "cellHeight:"+cellHeight+", cellWidth:"+cellWidth);
-
 		mPositionsH = new int[SIZE+2];
 		mPositionsW = new int[SIZE+1];
 
@@ -123,6 +122,7 @@ public class WBView extends View {
 	public void restart(){
 		setup();
 		DELAYMILLIS = 20;
+		delaychange = 1;
 		this.invalidate();
 	}
 
@@ -152,13 +152,14 @@ public class WBView extends View {
 
 			if( change > 0 ){
 				change = 16-change;
-				if( change < 0 ){change = 0;}
+				if( change < 0 ){
+					change = 0;
+				}
 				left += change/2;
 				top += change;
 				right -= change/2;
 				bottom -= change;
 				canvas.drawRect(left, top, right, bottom, paintGray);
-
 				mTouchEach[index]++;
 			}
 
@@ -216,14 +217,15 @@ public class WBView extends View {
 					break;
 				}
 			}
-			//Log.i(TAG, "mTouchCount:"+mTouchCount+", path:"+path+", mValue:"+mValue[ mTouchCount ]);
 			int index =  mTouchCount % mValue.length;
 			eq =  path == mValue[ index ];
 			mTouchEach[ index ] = 1;
 			mTouchCount++;
 
-			if( mTouchCount % 12 == 0){
+			if( mTouchCount == delaychange * 8 ){
 				DELAYMILLIS--;
+				delaychange += (20 - DELAYMILLIS);
+				Log.i("zhengwenhui", "delay:"+delaychange+",touch:"+mTouchCount+",MILLIS:"+DELAYMILLIS);
 			}
 		}
 
@@ -240,8 +242,10 @@ public class WBView extends View {
 			if(x>0){
 				mTouchCount--;
 			}
-			
+
 			saveHistory();
+			DELAYMILLIS = 20;
+			delaychange = 1;
 			mActionInterface.gameOver();
 		}
 

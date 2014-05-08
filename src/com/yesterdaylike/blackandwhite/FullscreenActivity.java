@@ -26,7 +26,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
 				switch (event.getAction()) {
-				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_DOWN:
 					Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
 					mGameOverView.checkPath(event.getX(), event.getY());
 					break;
@@ -47,7 +47,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
 				switch (event.getAction()) {
-				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_DOWN:
 					//Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
 					mWBView.checkPath(event.getX());
 					break;
