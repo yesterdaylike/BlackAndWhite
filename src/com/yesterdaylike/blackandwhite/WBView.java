@@ -263,6 +263,10 @@ public class WBView extends View {
 	}
 
 	public void saveHistory(){
+		if(mTouchCount<10){
+			return;
+		}
+		
 		if( null == historyDB ){
 			historyDB = new HistoryDB(mContext);
 		}

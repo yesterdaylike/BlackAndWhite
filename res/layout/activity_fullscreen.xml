@@ -18,34 +18,14 @@
         android:clickable="true"
         android:visibility="invisible" />
 
-    <!--
-         <RelativeLayout
-        android:id="@+id/game_over"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" >
-
-        <Button
-            android:id="@+id/bestscore"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            android:onClick="onClickButton" />
-
-        <Button
-            android:id="@+id/history"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            android:onClick="onClickButton" />
-
-        <Button
-            android:id="@+id/restart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            android:onClick="onClickButton" />
-    </RelativeLayout>
-    -->
+    <!-- <LinearLayout
+        android:id="@+id/adLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+    </LinearLayout> -->
 
 </RelativeLayout>

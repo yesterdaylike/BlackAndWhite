@@ -40,14 +40,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int qfav_list_bubble_nor=0x7f020002;
     }
     public static final class id {
-        public static final int day=0x7f090004;
+        public static final int adLayout=0x7f090003;
+        public static final int day=0x7f090005;
         public static final int game_over_view=0x7f090001;
         public static final int history_listview=0x7f090002;
         public static final int main_view=0x7f090000;
-        public static final int month=0x7f090003;
-        public static final int point=0x7f090006;
-        public static final int score=0x7f090007;
-        public static final int time=0x7f090005;
+        public static final int month=0x7f090004;
+        public static final int point=0x7f090007;
+        public static final int score=0x7f090008;
+        public static final int time=0x7f090006;
     }
     public static final class layout {
         public static final int activity_fullscreen=0x7f030000;
@@ -60,23 +61,25 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int keypress_spacebar=0x7f040001;
     }
     public static final class string {
-        public static final int action_best_score=0x7f070005;
-        public static final int action_history=0x7f070003;
-        public static final int action_restart=0x7f070004;
+        public static final int action_best_score=0x7f070003;
+        public static final int action_history=0x7f070001;
+        public static final int action_restart=0x7f070002;
         public static final int app_name=0x7f070000;
-        public static final int dummy_button=0x7f070001;
-        public static final int dummy_content=0x7f070002;
-        public static final int no_history=0x7f070006;
-        public static final int score=0x7f07000a;
-        public static final int step=0x7f070009;
-        public static final int today=0x7f070007;
-        public static final int yesterday=0x7f070008;
+        public static final int day=0x7f07000b;
+        public static final int month=0x7f07000a;
+        public static final int no_history=0x7f070004;
+        public static final int score=0x7f070008;
+        public static final int start=0x7f070009;
+        public static final int step=0x7f070007;
+        public static final int today=0x7f070005;
+        public static final int yesterday=0x7f070006;
     }
     public static final class style {
         public static final int ButtonBar=0x7f080001;
         public static final int ButtonBarButton=0x7f080002;
-        public static final int FullscreenActionBarStyle=0x7f080003;
+        public static final int FullscreenActionBarStyle=0x7f080004;
         public static final int FullscreenTheme=0x7f080000;
+        public static final int Transparent=0x7f080003;
     }
     public static final class styleable {
         /** 
