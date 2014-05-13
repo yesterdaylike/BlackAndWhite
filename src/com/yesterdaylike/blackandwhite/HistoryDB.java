@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class HistoryDB extends SQLiteOpenHelper {
 
@@ -14,7 +13,7 @@ public class HistoryDB extends SQLiteOpenHelper {
 
 	public HistoryDB(Context context) {
 		// TODO Auto-generated constructor stub
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);  
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	static String month = "month";
@@ -68,8 +67,6 @@ public class HistoryDB extends SQLiteOpenHelper {
 		cursor.close();
 		return best;
 	}
-	
-	
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

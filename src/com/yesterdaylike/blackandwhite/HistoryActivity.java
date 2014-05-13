@@ -75,24 +75,24 @@ public class HistoryActivity extends Activity {
 				}
 				else{
 					lastDay = day;
-					dayStr = String.valueOf(day)+"日";
+					dayStr = String.valueOf(day)+getString(R.string.day);
 				}
 			}
 			else{
 				lastMonth = month;
 				lastDay = day;
-				monthStr = String.valueOf(month+1)+"月";
-				dayStr = String.valueOf(day)+"日";
+				monthStr = String.valueOf(month+1)+getString(R.string.month);
+				dayStr = String.valueOf(day)+getString(R.string.day);
 			}
 
 			if( dayStr != "" && month == tomonth ){
 				if(day == today){
 					monthStr = null;
-					dayStr = "今天";
+					dayStr = getString(R.string.today);
 				}
 				else if(day == today-1){
 					monthStr = null;
-					dayStr = "昨天";
+					dayStr = getString(R.string.yesterday);
 				}
 			}
 

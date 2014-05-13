@@ -3,7 +3,7 @@ package com.yesterdaylike.blackandwhite;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -17,7 +17,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fullscreen);
-		
+
 		mGameOverView = (GameOverView)findViewById(R.id.game_over_view);
 		mGameOverView.setActionInterface(FullscreenActivity.this);
 		mGameOverView.setOnTouchListener(new OnTouchListener() {
@@ -27,7 +27,6 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 				// TODO Auto-generated method stub
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					Log.v("ACTION_UP", "X:"+event.getX()+", Y:"+event.getY());
 					mGameOverView.checkPath(event.getX(), event.getY());
 					break;
 
@@ -38,7 +37,7 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 				return false;
 			}
 		});
-		
+
 		mWBView = (WBView) findViewById(R.id.main_view);
 		mWBView.setActionInterface(FullscreenActivity.this);
 		mWBView.setOnTouchListener(new OnTouchListener() {
@@ -65,7 +64,13 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 	public void gameOver() {
 		// TODO Auto-generated method stub
 		mGameOverView.getBestScore();
-		mGameOverView.setVisibility(View.VISIBLE);
+
+		new Handler().postDelayed(new Runnable(){  
+			public void run() {  
+				//execute the task  
+				mGameOverView.setVisibility(View.VISIBLE);
+			}  
+		}, 1000);
 	}
 
 	@Override
@@ -85,6 +90,6 @@ public class FullscreenActivity extends Activity implements ActionInterface{
 	@Override
 	public void gameBestScore() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

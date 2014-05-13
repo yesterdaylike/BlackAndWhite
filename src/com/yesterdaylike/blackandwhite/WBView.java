@@ -12,7 +12,6 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class WBView extends View {
@@ -52,6 +51,7 @@ public class WBView extends View {
 	private ActionInterface mActionInterface; 
 	private HistoryDB historyDB;
 	private Context mContext;
+	private String mStartStr;
 
 	private Handler handler = new Handler();
 
@@ -66,6 +66,7 @@ public class WBView extends View {
 	public WBView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
+		mStartStr = mContext.getString(R.string.start);
 		mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
 		mSound = mSoundPool.load(context, R.raw.effect_tick, 1); 
 		mSoundOver = mSoundPool.load(context, R.raw.keypress_spacebar, 1); 
@@ -164,7 +165,7 @@ public class WBView extends View {
 			}
 
 			if( length == 0 && h == 0  ){
-				String valueStr = "¿ªÊ¼";
+				String valueStr = mStartStr;
 				int positionWText = left + ( cellWidth >> 1 );
 				int positionHText = top + ( cellHeight >> 1 );
 
@@ -225,7 +226,6 @@ public class WBView extends View {
 			if( mTouchCount == delaychange * 8 ){
 				DELAYMILLIS--;
 				delaychange += (20 - DELAYMILLIS);
-				Log.i("zhengwenhui", "delay:"+delaychange+",touch:"+mTouchCount+",MILLIS:"+DELAYMILLIS);
 			}
 		}
 

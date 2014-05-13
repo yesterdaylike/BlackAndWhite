@@ -9,7 +9,6 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class GameOverView extends View {
@@ -58,7 +57,6 @@ public class GameOverView extends View {
 
 	public void getBestScore(){
 		best = historyDB.queryBestScore();
-		Log.e("getBestScore", "best"+best);
 	}
 
 	public GameOverView(Context context, AttributeSet attrs) {
@@ -92,7 +90,6 @@ public class GameOverView extends View {
 	private void initPositionlist(){
 		height = getHeight();
 		width = getWidth();
-		Log.e("initPositionlist", "h:"+height+", w:"+width);
 		bestscoreRect = new RectF(0, height/4, width, height/2-1);
 		historyRect = new RectF(0, height/2, width/2-1, height);
 		restartRect = new RectF(width/2, height/2, width, height);
@@ -162,8 +159,6 @@ public class GameOverView extends View {
 		else{
 			checkedRect = null;
 		}
-
-		Log.i("checkPath", "["+x+","+y+"]");
 	}
 
 	void setActionInterface(ActionInterface mAI){
