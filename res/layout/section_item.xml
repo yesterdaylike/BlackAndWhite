@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/left_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:background="@drawable/left_section"
+        android:gravity="center_vertical"
+        android:onClick="onButtonClick"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/point"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/point" />
+
+    <Button
+        android:id="@+id/right_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:background="@drawable/right_section"
+        android:gravity="center_vertical"
+        android:onClick="onButtonClick"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>

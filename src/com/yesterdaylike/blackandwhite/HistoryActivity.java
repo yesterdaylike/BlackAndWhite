@@ -9,7 +9,6 @@ import java.util.Map;
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
 import net.youmi.android.smart.SmartBannerManager;
-import net.youmi.android.spot.SpotManager;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;

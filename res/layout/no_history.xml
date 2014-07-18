@@ -38,7 +38,6 @@
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/qfav_list_bubble_nor"
         android:gravity="center_vertical"
         android:text="@string/no_history"
         android:textColor="@android:color/white"

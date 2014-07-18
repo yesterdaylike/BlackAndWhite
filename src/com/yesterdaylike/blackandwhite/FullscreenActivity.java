@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Toast;
 
 public class FullscreenActivity extends Activity implements ActionInterface, CheckAppUpdateCallBack{
 
