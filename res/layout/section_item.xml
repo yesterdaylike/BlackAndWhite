@@ -16,11 +16,11 @@
         android:textColor="@android:color/white"
         android:textSize="20sp" />
 
-    <ImageView
+<!--     <ImageView
         android:id="@+id/point"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/point" />
+        android:background="@drawable/point" /> -->
 
     <Button
         android:id="@+id/right_section"

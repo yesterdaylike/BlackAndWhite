@@ -14,11 +14,14 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class FullscreenActivity extends Activity implements ActionInterface, CheckAppUpdateCallBack{
 
 	private WBView mWBView;
-	private GameOverView mGameOverView;
+	private RelativeLayout mGameOverView;
+	private TextView mScoreTextView;
 	//private LinearLayout mAdLayout;
 
 	@Override
@@ -32,25 +35,10 @@ public class FullscreenActivity extends Activity implements ActionInterface, Che
 
 		setContentView(R.layout.activity_fullscreen);
 
-		mGameOverView = (GameOverView)findViewById(R.id.game_over_view);
-		mGameOverView.setActionInterface(FullscreenActivity.this);
-		mGameOverView.setOnTouchListener(new OnTouchListener() {
+		mGameOverView = (RelativeLayout)findViewById(R.id.game_over_view);
+		//mGameOverView.setActionInterface(FullscreenActivity.this);
+		mScoreTextView = (TextView)mGameOverView.findViewById(R.id.score);
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					mGameOverView.checkPath(event.getX(), event.getY());
-					break;
-
-				default:
-					break;
-				}
-
-				return false;
-			}
-		});
 
 		mWBView = (WBView) findViewById(R.id.main_view);
 		mWBView.setActionInterface(FullscreenActivity.this);
@@ -74,14 +62,32 @@ public class FullscreenActivity extends Activity implements ActionInterface, Che
 		});
 	}
 
+	public void onButtonClick(View view){
+		switch (view.getId()) {
+		case R.id.share:
+
+			break;
+		case R.id.retry:
+			gameRestart();
+			break;
+		case R.id.nextpoint:
+			gameRestart();//ÏÂÒ»¹Ø
+			break;
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public void gameOver() {
 		// TODO Auto-generated method stub
-		mGameOverView.getBestScore();
+		//String bs = mWBView.getBestScore();
+		int cs = mWBView.getCurrentScore();
+		mScoreTextView.setText(String.valueOf(cs));
 
 		new Handler().postDelayed(new Runnable(){  
 			public void run() {  
-				//execute the task  
+				//execute the task
 				mGameOverView.setVisibility(View.VISIBLE);
 				SpotManager.getInstance(FullscreenActivity.this).showSpotAds(FullscreenActivity.this);
 			}  

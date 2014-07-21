@@ -5,9 +5,12 @@ import java.util.Calendar;
 import java.util.Random;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
@@ -53,6 +56,9 @@ public class WBView extends View {
 	private Context mContext;
 	private String mStartStr;
 
+	Bitmap bitmap;
+	RectF dst;
+
 	private Handler handler = new Handler();
 
 	private Runnable runnable= new Runnable() {
@@ -70,8 +76,24 @@ public class WBView extends View {
 		mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
 		mSound = mSoundPool.load(context, R.raw.effect_tick, 1); 
 		mSoundOver = mSoundPool.load(context, R.raw.keypress_spacebar, 1); 
+
+		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_press);
+		dst = new RectF();
+
 		initPaint();
 		setup();
+	}
+
+	public String getBestScore(){
+		if( null == historyDB ){
+			historyDB = new HistoryDB(mContext);
+		}
+		return historyDB.queryBestScore();
+	}
+
+
+	public int getCurrentScore(){
+		return mTouchCount;
 	}
 
 	private void initPaint(){
@@ -149,7 +171,9 @@ public class WBView extends View {
 			right = mPositionsW[w+1];
 			bottom = mPositionsH[h]+intervalH;
 
-			canvas.drawRect(left, top, right, bottom, paint);
+			//canvas.drawRect(left, top, right, bottom, paint);
+			dst.set(left, top, right, bottom);
+			canvas.drawBitmap(bitmap, null, dst, paint);
 
 			if( change > 0 ){
 				change = 16-change;
@@ -209,52 +233,55 @@ public class WBView extends View {
 		if(!mStart){
 			return;
 		}
+		try{
+			boolean eq = false;
+			if( x >= 0 && mPositionsW != null ){
+				int path = 0;
+				for (; path < mPositionsW.length - 1 ; path++) {
+					if(x <= mPositionsW[path+1] ){
+						break;
+					}
+				}
+				int index =  mTouchCount % mValue.length;
+				eq =  path == mValue[ index ];
+				mTouchEach[ index ] = 1;
+				mTouchCount++;
 
-		boolean eq = false;
-		if( x >= 0 ){
-			int path = 0;
-			for (; path < mPositionsW.length - 1 ; path++) {
-				if(x <= mPositionsW[path+1] ){
-					break;
+				if( mTouchCount == delaychange * 8 ){
+					DELAYMILLIS--;
+					delaychange += (20 - DELAYMILLIS);
 				}
 			}
-			int index =  mTouchCount % mValue.length;
-			eq =  path == mValue[ index ];
-			mTouchEach[ index ] = 1;
-			mTouchCount++;
 
-			if( mTouchCount == delaychange * 8 ){
-				DELAYMILLIS--;
-				delaychange += (20 - DELAYMILLIS);
-			}
-		}
+			if(!eq){
+				mSoundPool.play(mSoundOver, 1, 1, 0, 0, 1);
+				if(!mAnimation){
+					mTouchCount--;
+					return;
+				}
+				mAnimation = false;
+				handler.removeCallbacks(runnable);
+				mStart = false;
+				//可以重新开始
+				if(x>0){
+					mTouchCount--;
+				}
 
-		if(!eq){
-			mSoundPool.play(mSoundOver, 1, 1, 0, 0, 1);
-			if(!mAnimation){
-				mTouchCount--;
-				return;
-			}
-			mAnimation = false;
-			handler.removeCallbacks(runnable);
-			mStart = false;
-			//可以重新开始
-			if(x>0){
-				mTouchCount--;
+				saveHistory();
+				DELAYMILLIS = 20;
+				delaychange = 1;
+				mActionInterface.gameOver();
 			}
 
-			saveHistory();
-			DELAYMILLIS = 20;
-			delaychange = 1;
-			mActionInterface.gameOver();
-		}
-
-		else {
-			mSoundPool.play(mSound, 1, 1, 0, 0, 1);
-			if( !mAnimation ){
-				handler.post(runnable);
-				mAnimation = true;
+			else {
+				mSoundPool.play(mSound, 1, 1, 0, 0, 1);
+				if( !mAnimation ){
+					handler.post(runnable);
+					mAnimation = true;
+				}
 			}
+		}catch(Exception e){
+
 		}
 	}
 
@@ -266,7 +293,7 @@ public class WBView extends View {
 		if(mTouchCount<10){
 			return;
 		}
-		
+
 		if( null == historyDB ){
 			historyDB = new HistoryDB(mContext);
 		}

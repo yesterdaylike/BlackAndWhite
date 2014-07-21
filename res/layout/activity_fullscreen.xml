@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@drawable/main_bg"
     tools:context="com.yesterdaylike.blackandwhite.FullscreenActivity" >
 
     <com.yesterdaylike.blackandwhite.WBView
@@ -11,21 +11,60 @@
         android:layout_height="match_parent"
         android:clickable="true" />
 
-    <com.yesterdaylike.blackandwhite.GameOverView
+    <RelativeLayout
         android:id="@+id/game_over_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:visibility="invisible" />
-
-    <!-- <LinearLayout
-        android:id="@+id/adLayout"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/darker_gray"
-        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:background="@drawable/dialog"
+        android:padding="20dp"
         android:visibility="invisible" >
-    </LinearLayout> -->
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:numStars="5"
+            android:stepSize="0.5" />
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rating_bar"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ffffff00"
+            android:textSize="72sp" />
+
+        <Button
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/score"
+            android:layout_margin="10dp"
+            android:background="@drawable/play_share"
+            android:onClick="onButtonClick" />
+
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/score"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/share"
+            android:background="@drawable/play_again"
+            android:onClick="onButtonClick" />
+
+        <Button
+            android:id="@+id/nextpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/score"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/retry"
+            android:background="@drawable/play_next"
+            android:onClick="onButtonClick" />
+    </RelativeLayout>
 
 </RelativeLayout>
