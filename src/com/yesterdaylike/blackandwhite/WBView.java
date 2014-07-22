@@ -56,7 +56,8 @@ public class WBView extends View {
 	private Context mContext;
 	private String mStartStr;
 
-	Bitmap bitmap;
+	private Bitmap bitmap;
+	private Bitmap bitmapPressed;
 	RectF dst;
 
 	private Handler handler = new Handler();
@@ -77,7 +78,8 @@ public class WBView extends View {
 		mSound = mSoundPool.load(context, R.raw.effect_tick, 1); 
 		mSoundOver = mSoundPool.load(context, R.raw.keypress_spacebar, 1); 
 
-		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_press);
+		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.foot_keng);
+		bitmapPressed = BitmapFactory.decodeResource(getResources(), R.drawable.foot_pressed);
 		dst = new RectF();
 
 		initPaint();
@@ -184,7 +186,9 @@ public class WBView extends View {
 				top += change;
 				right -= change/2;
 				bottom -= change;
-				canvas.drawRect(left, top, right, bottom, paintGray);
+				//canvas.drawRect(left, top, right, bottom, paintGray);
+				dst.set(left, top, right, bottom);
+				canvas.drawBitmap(bitmapPressed, null, dst, paint);
 				mTouchEach[index]++;
 			}
 
