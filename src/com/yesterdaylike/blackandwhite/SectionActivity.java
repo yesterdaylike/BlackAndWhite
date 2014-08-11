@@ -47,7 +47,9 @@ public class SectionActivity extends Activity {
 			break;
 
 		default:
+			int position = (Integer) view.getTag();
 			Intent intent = new Intent(this, FullscreenActivity.class);
+			intent.putExtra("POSITION", position);
 			startActivity(intent);
 			break;
 		}
@@ -85,17 +87,17 @@ public class SectionActivity extends Activity {
 		@Override  
 		public int getCount() {  
 			//return dataList.size();  
-			return 12;
+			return 5;
 		}  
 
 		@Override  
 		public HashMap<String, Object> getItem(int position) {  
 			//return dataList.get(position);  
 			return null;
-		}  
+		}
 
 		@Override  
-		public long getItemId(int position) {  
+		public long getItemId(int position) {
 			return position;  
 		}  
 
@@ -113,19 +115,42 @@ public class SectionActivity extends Activity {
 				convertView.setTag(holder);
 			} else {  
 				holder = (ViewHolder) convertView.getTag();
-			}  
+			}
 
-			if( position%3 == 0 ){
+			switch (position) {
+			case 0:
 				holder.rightSection.setVisibility(View.INVISIBLE);
 				holder.leftSection.setVisibility(View.VISIBLE);
 				holder.leftSection.setTag(position);
-			}
-			else{
+				holder.leftSection.setText("练习");
+				break;
+			case 1:
 				holder.rightSection.setVisibility(View.VISIBLE);
 				holder.rightSection.setTag(position);
 				holder.leftSection.setVisibility(View.INVISIBLE);
+				holder.rightSection.setText("两条腿");
+				break;
+			case 2:
+				holder.rightSection.setVisibility(View.VISIBLE);
+				holder.rightSection.setTag(position);
+				holder.leftSection.setVisibility(View.INVISIBLE);
+				holder.rightSection.setText("两条腿疾步");
+				break;
+			case 3:
+				holder.rightSection.setVisibility(View.INVISIBLE);
+				holder.leftSection.setVisibility(View.VISIBLE);
+				holder.leftSection.setTag(position);
+				holder.leftSection.setText("四条腿");
+				break;
+			case 4:
+				holder.rightSection.setVisibility(View.INVISIBLE);
+				holder.leftSection.setVisibility(View.VISIBLE);
+				holder.leftSection.setTag(position);
+				holder.leftSection.setText("四条腿疾步");
+				break;
+			default:
+				break;
 			}
-
 			return convertView;
 		}  
 

@@ -20,7 +20,7 @@ import android.view.View;
 public class WBView extends View {
 
 	private String TAG = "WBView";
-
+	int mType = 0;
 	private final int SIZE = 4;
 	private final int STEPS = 16;
 	public static int DELAYMILLIS = 20;
@@ -165,6 +165,9 @@ public class WBView extends View {
 
 		for (int h = 0; h <= SIZE; h++) {
 			int index  = ( h + length ) % mValue.length;
+			if(mType==0 && index>5){
+				break;
+			}
 			int w = mValue[ index ];
 			int change = mTouchEach[index];
 
@@ -223,10 +226,25 @@ public class WBView extends View {
 	}
 
 	private int getRandomPosition(){
+		int position = 0;
+
 		if( null == mRandom ){
 			mRandom = new Random();
 		}
-		return mRandom.nextInt(SIZE);
+
+		switch (mType) {
+		case 0:
+		case 1:
+		case 2:
+			position = mRandom.nextInt(2) + 1;
+			break;
+
+		default:
+			position = mRandom.nextInt(SIZE);
+			break;
+		}
+
+		return position;
 	}
 
 	public boolean isAnimation(){
@@ -270,14 +288,21 @@ public class WBView extends View {
 				if(x>0){
 					mTouchCount--;
 				}
+				if(mType != 0){
+					saveHistory();
+				}
 
-				saveHistory();
 				DELAYMILLIS = 20;
 				delaychange = 1;
 				mActionInterface.gameOver();
 			}
 
 			else {
+				if(mType==0 && mTouchCount>5){
+					mActionInterface.gameOver();
+					saveHistory();
+				}
+
 				mSoundPool.play(mSound, 1, 1, 0, 0, 1);
 				if( !mAnimation ){
 					handler.post(runnable);
@@ -294,7 +319,7 @@ public class WBView extends View {
 	}
 
 	public void saveHistory(){
-		if(mTouchCount<10){
+		if(mTouchCount<10 && mType != 0){
 			return;
 		}
 

@@ -23,6 +23,7 @@ public class FullscreenActivity extends Activity implements ActionInterface, Che
 	private RelativeLayout mGameOverView;
 	private TextView mScoreTextView;
 	//private LinearLayout mAdLayout;
+	private int mType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class FullscreenActivity extends Activity implements ActionInterface, Che
 		AdManager.getInstance(this).setUserDataCollect(true);
 
 		setContentView(R.layout.activity_fullscreen);
+		mType = getIntent().getIntExtra("POSITION", 0);
 
 		mGameOverView = (RelativeLayout)findViewById(R.id.game_over_view);
 		//mGameOverView.setActionInterface(FullscreenActivity.this);
@@ -41,6 +43,9 @@ public class FullscreenActivity extends Activity implements ActionInterface, Che
 
 
 		mWBView = (WBView) findViewById(R.id.main_view);
+		
+		mWBView.mType = mType;
+		
 		mWBView.setActionInterface(FullscreenActivity.this);
 		mWBView.setOnTouchListener(new OnTouchListener() {
 
